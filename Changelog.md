@@ -7,6 +7,7 @@ Language Features:
 
 
 Compiler Features:
+ * Metadata: Update the swarm hash, changes ``bzzr0`` to ``bzzr1`` and urls to use ``bzz-raw://``.
 
 
 
