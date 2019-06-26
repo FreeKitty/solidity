@@ -30,7 +30,10 @@ add_executable(soltest ${sources} ${headers}
     ${libsolidity_sources} ${libsolidity_headers}
     ${libsolidity_util_sources} ${libsolidity_util_headers}
 )
-target_link_libraries(soltest PRIVATE libsolc yul solidity yulInterpreter evmasm devcore Boost::boost Boost::program_options Boost::unit_test_framework)
+target_link_libraries(soltest PRIVATE libsolc yul solidity yulInterpreter evmasm devcore Boost::boost Boost::program_options Boost::unit_test_framework evmc::evmc evmc::loader)
+#get_filename_component(evmc_include_dir .. ABSOLUTE)
+target_include_directories(soltest PRIVATE evmc_include_dir)
+target_include_directories(soltest PRIVATE evmc/include/)
 
 # Special compilation flag for Visual Studio (version 2019 at least affected)
 # in order to compile SolidityEndToEndTest.cpp, which is quite huge.

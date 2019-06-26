@@ -413,7 +413,7 @@ BOOST_AUTO_TEST_CASE(auction_simple)
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), 0);
 	// "wait" until auction end
-	m_rpc.test_modifyTimestamp(currentTimestamp() + m_biddingTime + 10);
+//	m_rpc.test_modifyTimestamp(currentTimestamp() + m_biddingTime + 10);
 	// trigger auction again
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), m_sender);
@@ -424,8 +424,8 @@ BOOST_AUTO_TEST_CASE(auction_bidding)
 	deployRegistrar();
 	string name = "x";
 
-	unsigned startTime = 0x776347e2;
-	m_rpc.test_modifyTimestamp(startTime);
+//	unsigned startTime = 0x776347e2;
+//	m_rpc.test_modifyTimestamp(startTime);
 
 	RegistrarInterface registrar(*this);
 	// initiate auction
@@ -433,19 +433,19 @@ BOOST_AUTO_TEST_CASE(auction_bidding)
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), 0);
 	// overbid self
-	m_rpc.test_modifyTimestamp(startTime + m_biddingTime - 10);
+//	m_rpc.test_modifyTimestamp(startTime + m_biddingTime - 10);
 	registrar.setNextValue(12);
 	registrar.reserve(name);
 	// another bid by someone else
 	sendEther(account(1), 10 * ether);
 	m_sender = account(1);
-	m_rpc.test_modifyTimestamp(startTime + 2 * m_biddingTime - 50);
+//	m_rpc.test_modifyTimestamp(startTime + 2 * m_biddingTime - 50);
 	registrar.setNextValue(13);
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), 0);
 	// end auction by first bidder (which is not highest) trying to overbid again (too late)
 	m_sender = account(0);
-	m_rpc.test_modifyTimestamp(startTime + 4 * m_biddingTime);
+//	m_rpc.test_modifyTimestamp(startTime + 4 * m_biddingTime);
 	registrar.setNextValue(20);
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), account(1));
@@ -457,21 +457,21 @@ BOOST_AUTO_TEST_CASE(auction_renewal)
 
 	string name = "x";
 	RegistrarInterface registrar(*this);
-	size_t startTime = currentTimestamp();
+//	size_t startTime = currentTimestamp();
 	// register name by auction
 	registrar.setNextValue(8);
 	registrar.reserve(name);
-	m_rpc.test_modifyTimestamp(startTime + 4 * m_biddingTime);
+//	m_rpc.test_modifyTimestamp(startTime + 4 * m_biddingTime);
 	registrar.reserve(name);
 	BOOST_CHECK_EQUAL(registrar.owner(name), m_sender);
 
 	// try to re-register before interval end
 	sendEther(account(1), 10 * ether);
 	m_sender = account(1);
-	m_rpc.test_modifyTimestamp(currentTimestamp() + m_renewalInterval - 1);
+//	m_rpc.test_modifyTimestamp(currentTimestamp() + m_renewalInterval - 1);
 	registrar.setNextValue(80);
 	registrar.reserve(name);
-	m_rpc.test_modifyTimestamp(currentTimestamp() + m_biddingTime);
+//	m_rpc.test_modifyTimestamp(currentTimestamp() + m_biddingTime);
 	// if there is a bug in the renewal logic, this would transfer the ownership to account(1),
 	// but if there is no bug, this will initiate the auction, albeit with a zero bid
 	registrar.reserve(name);

@@ -245,6 +245,8 @@ private:
 	}
 
 protected:
+	class Host;
+
 	void sendMessage(bytes const& _data, bool _isCreation, u256 const& _value = 0);
 	void sendEther(Address const& _to, u256 const& _value);
 	size_t currentTimestamp();
@@ -257,8 +259,6 @@ protected:
 	bool storageEmpty(Address const& _addr);
 	bool addressHasCode(Address const& _addr);
 
-	RPCSession& m_rpc;
-
 	struct LogEntry
 	{
 		Address address;
@@ -269,8 +269,12 @@ protected:
 	langutil::EVMVersion m_evmVersion;
 	solidity::OptimiserSettings m_optimiserSettings = solidity::OptimiserSettings::minimal();
 	bool m_showMessages = false;
+	std::shared_ptr<Host> m_evmcHost;
+	bytes m_code;
+
 	bool m_transactionSuccessful = true;
-	Address m_sender;
+	Address m_sender{"0x1212121212121212121212121212121212121212"};
+	size_t m_nonce = 0;
 	Address m_contractAddress;
 	u256 m_blockNumber;
 	u256 const m_gasPrice = 100 * szabo;
